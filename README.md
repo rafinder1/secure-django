@@ -1,29 +1,3 @@
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
--keyout /etc/ssl/private/selfsigned.key \
--out /etc/ssl/certs/selfsigned.crt
-
-Country Name (2 letter code) [AU]:PL
-State or Province Name (full name) [Some-State]:Mazowieckie
-Locality Name (eg, city) []:Warszawa
-Organization Name (eg, company) [Internet Widgits Pty Ltd]:IT-Learn
-Organizational Unit Name (eg, section) []:IT
-Common Name (e.g. server FQDN or YOUR name) []:89.64.83.229
-Email Address []:rafpro33@gmail.com
-
-sudo mv gunicorn.service /etc/systemd/system/gunicorn.service
-              
-
-mv secure-django.conf /etc/nginx/sites-available/secure-django
-sudo ln -s /etc/nginx/sites-available/secure-django /etc/nginx/sites-enabled/
-sudo nginx -t
-sudo systemctl restart nginx
-sudo systemctl status nginx 
-
-sudo systemctl daemon-reload
-sudo systemctl start gunicorn
-sudo systemctl enable gunicorn
-sudo systemctl status gunicorn
-
 # 🔐 Secure Django Deployment (Gunicorn + Nginx + SSL)
 
 This guide walks you through deploying a Django project using:
@@ -130,7 +104,7 @@ Click **Advanced → Continue Anyway**.
 ```env
 DEBUG=False
 SECRET_KEY=your-secure-secret-key
-ALLOWED_HOSTS=127.0.0.1,localhost,192.168.0.248,89.64.83.229
+ALLOWED_HOSTS=127.0.0.1,localhost,192.168.0.248
 ```
 
 > And in your Django `settings.py`:
