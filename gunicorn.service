@@ -1,12 +1,12 @@
 [Unit]
-Description=gunicorn daemon
+Description=gunicorn daemon for secure-django
 After=network.target
 
 [Service]
-User=www-data
-Group=www-data
-WorkingDirectory=/home/youruser/myproject
-ExecStart=/usr/bin/gunicorn myproject.wsgi:application --bind 127.0.0.1:8000
+User=kali
+Group=kali
+WorkingDirectory=/home/kali/secure-django
+ExecStart=/home/kali/secure-django/venv/bin/gunicorn secure_django.wsgi:application --bind 127.0.0.1:8000
 
 [Install]
 WantedBy=multi-user.target
