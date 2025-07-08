@@ -41,4 +41,7 @@ jobs:
         run: terraform plan -var="project_id=${{ secrets.PROJECT_ID }}" -var="region=${{ secrets.REGION }}"
         working-directory: ./terraform
 
-      
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -var="project_id=${{ secrets.PROJECT_ID }}" -var="region=${{ secrets.REGION }}"
+        working-directory: ./terraform
+     
