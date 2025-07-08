@@ -14,10 +14,6 @@ jobs:
     concurrency: # zapobiega równoczesnemu uruchomieniu
       group: terraform-gcp-lock
       cancel-in-progress: false
-    env:
-      ENVIRONMENT: ${{ github.event.inputs.environment }}
-      TF_VAR_environment: ${{ github.event.inputs.environment }}
-    
 
     steps:
       - name: Checkout repo
