@@ -11,6 +11,7 @@ on:
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    environment: production
     concurrency: # zapobiega równoczesnemu uruchomieniu
       group: terraform-gcp-lock
       cancel-in-progress: false
