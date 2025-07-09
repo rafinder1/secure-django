@@ -51,4 +51,42 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
         working-directory: ./terraform
+  
+  build-and-push:
+    needs: terraform
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Build and Push Docker Image to Artifact Registry
+        run: |
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          IMAGE_NAME="secure-django"
+          REGION="${{ secrets.GCP_REGION }}"
+          PROJECT_ID="${{ secrets.GCP_PROJECT_ID }}"
+          REPO_NAME="app-container-repo"
+          IMAGE_PATH="${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO_NAME}/${IMAGE_NAME}"
+
+          echo "Building Docker image..."
+          docker build -t ${IMAGE_NAME}:${{ github.sha }} .
+
+          echo "Tagging Docker image..."
+          docker tag ${IMAGE_NAME}:${{ github.sha }} ${IMAGE_PATH}:${SHORT_SHA}
+          docker tag ${IMAGE_NAME}:${{ github.sha }} ${IMAGE_PATH}:latest
+
+          echo "Authenticating Docker to Artifact Registry..."
+          gcloud auth configure-docker ${REGION}-docker.pkg.dev --quiet
+
+          echo "Pushing Docker image..."
+          docker push ${IMAGE_PATH}:${SHORT_SHA}
+          docker push ${IMAGE_PATH}:latest
      
