@@ -72,8 +72,8 @@ jobs:
         run: |
           SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
           IMAGE_NAME="secure-django"
-          REGION="${{ secrets.GCP_REGION }}"
-          PROJECT_ID="${{ secrets.GCP_PROJECT_ID }}"
+          REGION="${{ secrets.REGION }}"
+          PROJECT_ID="${{ secrets.PROJECT_ID }}"
           REPO_NAME="app-container-repo"
           IMAGE_PATH="${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO_NAME}/${IMAGE_NAME}"
 
