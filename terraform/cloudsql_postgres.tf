@@ -13,7 +13,7 @@ resource "google_sql_database_instance" "postgres_instance" {
     }
 
     backup_configuration {
-      enabled = true
+      enabled = false
     }
 
     activation_policy = "ALWAYS"
