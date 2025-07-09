@@ -38,10 +38,17 @@ jobs:
         working-directory: ./terraform
 
       - name: Terraform Plan
-        run: terraform plan -var="project_id=${{ secrets.PROJECT_ID }}" -var="region=${{ secrets.REGION }}"
+        run: |
+          terraform plan \
+            -out=tfplan \
+            -var="project_id=${{ secrets.PROJECT_ID }}" \
+            -var="region=${{ secrets.REGION }}" \
+            -var="db_user=${{ secrets.DB_USER }}" \
+            -var="db_password=${{ secrets.DB_PASSWORD }}" \
+            -var="db_name=${{ secrets.DB_INSTANCE_NAME }}"
         working-directory: ./terraform
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve -var="project_id=${{ secrets.PROJECT_ID }}" -var="region=${{ secrets.REGION }}"
+        run: terraform apply -auto-approve tfplan
         working-directory: ./terraform
      
